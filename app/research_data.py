@@ -12,6 +12,7 @@ import json
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from functools import lru_cache
 
 
 ENDPOINT = 'https://landregistry.data.gov.uk/landregistry/query'
@@ -24,7 +25,16 @@ TARGETS = {'Didcot': ('town','DIDCOT'), 'Fleet': ('town','FLEET'),
 FIELDS = ('paon','saon','street','locality','town','district','county','postcode')
 
 
-def classify_market(locality, postal_town):
+@lru_cache(maxsize=1)
+def linslade_postcodes():
+    path=Path(__file__).parent/'config'/'linslade-ward-postcodes.json'
+    if not path.exists():return set()
+    data=json.loads(path.read_text())
+    if data['ward_code']!='E05014416':raise ValueError('Unexpected Linslade ward definition')
+    return {p.replace(' ','').upper() for p in data['postcodes']}
+
+
+def classify_market(locality, postal_town, postcode=''):
     locality=(locality or '').upper().strip()
     town=(postal_town or '').upper().strip()
     # Locality outranks postal town. Preserve both original fields separately.
@@ -32,6 +42,8 @@ def classify_market(locality, postal_town):
         return 'Flitwick','explicit locality or postal town'
     if locality=='LINSLADE' or town=='LINSLADE':
         return 'Linslade','explicit locality or postal town'
+    if town=='LEIGHTON BUZZARD' and postcode.replace(' ','').upper() in linslade_postcodes():
+        return 'Linslade','postcode centroid in Leighton-Linslade West ward E05014416'
     for name in ('Didcot','Fleet','Hitchin'):
         if town==name.upper():
             if locality and locality!=town:

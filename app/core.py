@@ -363,7 +363,7 @@ def import_sales(db, paths):
                 if len(row)>15 and row[15] == "D":
                     db.execute("DELETE FROM transactions WHERE id=?", (row[0],))
                     continue
-                market,evidence=classify_market(row[10],row[11])
+                market,evidence=classify_market(row[10],row[11],row[3])
                 if not market or row[4] not in ("D", "S", "T"):
                     # A correction can move a previously included transaction out of scope.
                     db.execute("DELETE FROM transactions WHERE id=?", (row[0],))

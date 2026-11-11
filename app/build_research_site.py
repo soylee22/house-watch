@@ -44,7 +44,7 @@ def build(state,hpi,model_dir,destination):
     payload={'profile':profile,'evaluation':evaluation,'model':model,'markets':markets,'hpi':hpi_json,
              'columns':['date','price','type','street','postcode','number','unit','new_build','tenure','category'],
              'generated':profile['source_snapshot'],'hpi_release':profile['hpi_release'],
-             'geography_note':'Postal areas include labelled surrounding markets. Linslade identification is incomplete because locality labels are often absent. Its '+str(profile['by_market'].get('Linslade',0))+' explicitly labelled sales are not a full local census.'}
+             'geography_note':'Core markets and surrounding postal areas are separate. Linslade uses explicit locality labels plus 201 postcodes whose current centroids fall in Leighton-Linslade West ward (E05014416). This is a stated ward proxy, not an exact house boundary. Unresolved and other Leighton Buzzard postcodes remain broader comparison context.'}
     (data/'research.json').write_text(json.dumps(payload,separators=(',',':')))
     base=Path(__file__).parent/'research_web'
     for name in ('index.html','style.css','app.js'):

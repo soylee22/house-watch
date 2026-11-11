@@ -16,6 +16,8 @@ class GeographyTest(unittest.TestCase):
         self.assertIsNone(classify_market('AMPTHILL','BEDFORD')[0])
         self.assertEqual(classify_market('LINSLADE','LEIGHTON BUZZARD')[0],'Linslade')
         self.assertEqual(classify_market('','LEIGHTON BUZZARD')[0],'Leighton Buzzard context')
+        self.assertEqual(classify_market('LEIGHTON BUZZARD','LEIGHTON BUZZARD','LU7 2TJ')[0],'Linslade')
+        self.assertEqual(classify_market('LEIGHTON BUZZARD','LEIGHTON BUZZARD','LU7 3JT')[0],'Leighton Buzzard context')
         self.assertEqual(classify_market('HARWELL','DIDCOT')[0],'Didcot surrounds')
 
     def test_original_geography_comparables_and_out_of_scope_deletions(self):

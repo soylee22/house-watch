@@ -19,7 +19,7 @@ async function selectMarket(){
     if(!cache.has(market.slug))cache.set(market.slug,await getJSON('data/'+market.slug+'.json'));
     if(version!==requestVersion)return;
     rows=cache.get(market.slug);page=0;
-    $('market-description').textContent=market.name==='Linslade'?'Incomplete locality coverage. Broader Leighton Buzzard evidence is available separately.':market.core?'Core market. Nearby localities are listed separately as comparison areas.':'Comparison geography. This is a wider postal area, not the named core town.';
+    $('market-description').textContent=market.name==='Linslade'?'Linslade uses a west-ward postcode proxy. Other Leighton Buzzard records remain comparison context.':market.core?'Core market. Nearby localities are listed separately as comparison areas.':'Comparison geography. This is a wider postal area, not the named core town.';
     $('sale-count').textContent=number(rows.length);
     const latest=rows.filter(r=>r[0].startsWith('2025')&&r[9]==='A');
     $('median').textContent=latest.length?money(quantile(latest.map(r=>r[1]),.5)):'Unavailable';
