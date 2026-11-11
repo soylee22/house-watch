@@ -26,15 +26,15 @@
       ],
       "selection": {
         "n": 1385,
-        "mae": 96685.15405693899,
+        "mae": 96685.154056939,
         "median_ape": 0.14718201311490708,
-        "bias": -21288.414176223305
+        "bias": -21288.414176223334
       },
       "test": {
         "n": 3634,
-        "mae": 105142.64755710571,
+        "mae": 105142.64755710574,
         "median_ape": 0.14642331682960513,
-        "bias": -19453.988286000676
+        "bias": -19453.988286000716
       }
     },
     {
@@ -48,17 +48,17 @@
       ],
       "selection": {
         "n": 1385,
-        "mae": 89249.51344555085,
-        "median_ape": 0.13018911111031417,
-        "bias": -18678.122993901598
+        "mae": 89249.51382304025,
+        "median_ape": 0.13018909893933373,
+        "bias": -18678.12230456084
       },
       "test": {
         "n": 3634,
-        "mae": 93576.25534471164,
-        "median_ape": 0.13110738427372182,
-        "bias": -15608.259754288365,
+        "mae": 93576.25534111442,
+        "median_ape": 0.13110739429835072,
+        "bias": -15608.259189753076,
         "interval_coverage": 0.8026967528893781,
-        "median_interval_width": 249632.53456953153
+        "median_interval_width": 249632.55411620822
       }
     },
     {
@@ -73,133 +73,133 @@
       ],
       "selection": {
         "n": 1385,
-        "mae": 89256.79332421368,
-        "median_ape": 0.1303701258025849,
-        "bias": -19489.000653520274
+        "mae": 89256.79363167129,
+        "median_ape": 0.1303701994350841,
+        "bias": -19489.001204159653
       },
       "test": {
         "n": 3634,
-        "mae": 93559.39516964246,
-        "median_ape": 0.13119963309168314,
-        "bias": -16382.880501295833
+        "mae": 93559.39450370842,
+        "median_ape": 0.13119961680047804,
+        "bias": -16382.87961729808
       }
     }
   ],
   "by_market": {
     "Didcot": {
       "n": 468,
-      "mae": 53198.6089215729,
-      "median_ape": 0.106929827965833,
-      "bias": -12469.852634836976,
+      "mae": 53198.607945144366,
+      "median_ape": 0.10692982174127458,
+      "bias": -12469.84912824053,
       "interval_coverage": 0.8846153846153846,
-      "median_interval_width": 200482.58187487794
+      "median_interval_width": 200482.59459286634
     },
     "Didcot surrounds": {
       "n": 260,
-      "mae": 96342.89783137948,
-      "median_ape": 0.12441870281010659,
-      "bias": -20710.081524764817,
+      "mae": 96342.89768449016,
+      "median_ape": 0.12441868264061284,
+      "bias": -20710.087985922266,
       "interval_coverage": 0.7846153846153846,
-      "median_interval_width": 234621.77354314076
+      "median_interval_width": 234621.78327824076
     },
     "Fleet": {
       "n": 361,
-      "mae": 120855.66424753232,
-      "median_ape": 0.1480469715348628,
-      "bias": -15324.933795888333,
+      "mae": 120855.66478429946,
+      "median_ape": 0.1480469442759258,
+      "bias": -15324.930846828061,
       "interval_coverage": 0.8005540166204986,
-      "median_interval_width": 370913.12149092555
+      "median_interval_width": 370913.13417936966
     },
     "Fleet surrounds": {
       "n": 297,
-      "mae": 95722.96702545628,
-      "median_ape": 0.1294077873218331,
-      "bias": -2443.509693668941,
+      "mae": 95722.96693732412,
+      "median_ape": 0.12940780709188004,
+      "bias": -2443.498216705907,
       "interval_coverage": 0.7811447811447811,
-      "median_interval_width": 270639.1133883576
+      "median_interval_width": 270639.1408905706
     },
     "Flitwick": {
       "n": 214,
-      "mae": 53904.02746762791,
-      "median_ape": 0.10618375679429859,
-      "bias": -3346.29435083635,
+      "mae": 53904.02753643727,
+      "median_ape": 0.1061837538097703,
+      "bias": -3346.2960744228117,
       "interval_coverage": 0.8598130841121495,
-      "median_interval_width": 199546.51498193765
+      "median_interval_width": 199546.52097288234
     },
     "Hitchin": {
       "n": 388,
-      "mae": 128207.09240433572,
-      "median_ape": 0.15281372072452665,
-      "bias": -59425.29263896354,
+      "mae": 128207.09253554372,
+      "median_ape": 0.1528137233925263,
+      "bias": -59425.290505701014,
       "interval_coverage": 0.75,
-      "median_interval_width": 276813.2045887625
+      "median_interval_width": 276813.22009717906
     },
     "Hitchin surrounds": {
       "n": 563,
-      "mae": 135772.29912172921,
-      "median_ape": 0.174017576067242,
-      "bias": -21403.937611422556,
+      "mae": 135772.29950166872,
+      "median_ape": 0.17401759932366168,
+      "bias": -21403.936007765355,
       "interval_coverage": 0.7246891651865008,
-      "median_interval_width": 292143.55764506926
+      "median_interval_width": 292143.5583069491
     },
     "Leighton Buzzard context": {
       "n": 905,
-      "mae": 75856.00198165169,
-      "median_ape": 0.12523678269752492,
-      "bias": -823.6160448099312,
+      "mae": 75856.00216053649,
+      "median_ape": 0.12523670327967795,
+      "bias": -823.6206092862278,
       "interval_coverage": 0.8232044198895028,
-      "median_interval_width": 219683.98601377834
+      "median_interval_width": 219683.9851496837
     },
     "Linslade": {
       "n": 178,
-      "mae": 65629.73922148714,
-      "median_ape": 0.11418977732512414,
-      "bias": -15016.687120366778,
+      "mae": 65629.73850833598,
+      "median_ape": 0.11418978640408733,
+      "bias": -15016.6849507041,
       "interval_coverage": 0.8426966292134831,
-      "median_interval_width": 196133.61164559607
+      "median_interval_width": 196133.61374931244
     }
   },
   "by_type": {
     "D": {
       "n": 1277,
-      "mae": 146244.00001279087,
-      "median_ape": 0.1676697217454559,
-      "bias": -27489.92993974042,
+      "mae": 146243.99935476735,
+      "median_ape": 0.16766972180286388,
+      "bias": -27489.928320166375,
       "interval_coverage": 0.721221613155834,
-      "median_interval_width": 348586.31088102143
+      "median_interval_width": 348586.31987136893
     },
     "S": {
       "n": 1314,
-      "mae": 69638.27773066922,
-      "median_ape": 0.1032002477188032,
-      "bias": -13470.969586650363,
+      "mae": 69638.27823614945,
+      "median_ape": 0.10320028851005236,
+      "bias": -13470.969040909127,
       "interval_coverage": 0.8531202435312024,
-      "median_interval_width": 231280.22282624937
+      "median_interval_width": 231280.23947987647
     },
     "T": {
       "n": 1043,
-      "mae": 59250.07379506118,
-      "median_ape": 0.12581744335004652,
-      "bias": -3753.520016468681,
+      "mae": 59250.073951362865,
+      "median_ape": 0.12581746500281477,
+      "bias": -3753.5207199958036,
       "interval_coverage": 0.8389261744966443,
-      "median_interval_width": 191300.52074188075
+      "median_interval_width": 191300.51765564264
     }
   },
   "unseen_properties": {
     "n": 561,
-    "mae": 93818.25076224409,
-    "median_ape": 0.1252719210561266,
-    "bias": -16103.762570907526,
+    "mae": 93818.25074117929,
+    "median_ape": 0.1252719129030434,
+    "bias": -16103.761452403893,
     "interval_coverage": 0.7807486631016043,
-    "median_interval_width": 245879.29541520186
+    "median_interval_width": 245879.31666229776
   },
   "test": {
     "n": 3634,
-    "mae": 93576.25534471164,
-    "median_ape": 0.13110738427372182,
-    "bias": -15608.259754288365,
+    "mae": 93576.25534111442,
+    "median_ape": 0.13110739429835072,
+    "bias": -15608.259189753076,
     "interval_coverage": 0.8026967528893781,
-    "median_interval_width": 249632.53456953153
+    "median_interval_width": 249632.55411620822
   },
   "fold_counts": {
     "train": 40627,
@@ -208,7 +208,7 @@
     "test": 3634
   },
   "interval_target": 0.8,
-  "log_interval_radius": 0.2744462656601253,
+  "log_interval_radius": 0.27444627375671893,
   "design": "Train 2010\u20132023 excluding 15% of properties. Select on Jan\u2013Jun 2024. Calibrate on Jul\u2013Dec 2024. Test on 2025. Refit through 2025 for website.",
   "caveat": "Retrospective revised-data assessment. Type/area HPI for the target month is an observed market input. This does not test a real-time forecast before that index was published.",
   "missing_features": [
