@@ -15,7 +15,7 @@
       "ff4cebf2971884ca30771557428e271fd36668aedeb7b03c54f2d7abd561e6ee",
       "809aef7b288b1b7d1d32bb39373a80f9b9f3b125f8e836b54cb38d194d7d60cb"
     ],
-    "retrieved": "2026-11-11T19:29:43.124249+00:00",
+    "retrieved": "2026-11-11T19:52:30.957844+00:00",
     "format": "PPD column projection of official current linked-data records",
     "coverage": "All current returned D/S/T records for this selector, not all nearby postcodes"
   },
@@ -35,7 +35,7 @@
       "2b45d984481487d5fc101a55025d0c91c87aeed9c77dedd011d82ed206b9bf75",
       "0185dc2b705f001bb40dc99ce317a0c8d045ea06a1b3cf4e4fadbd86b07ca5af"
     ],
-    "retrieved": "2026-11-11T19:29:59.762213+00:00",
+    "retrieved": "2026-11-11T19:52:57.790712+00:00",
     "format": "PPD column projection of official current linked-data records",
     "coverage": "All current returned D/S/T records for this selector, not all nearby postcodes"
   },
@@ -56,7 +56,7 @@
       "e64d0734405e802e6fc81870629508c789ea3ed5810c3638d4afdbeb6c0428a9",
       "70b0d3ff37ef06f23be4c4693c054b947a389f52ec0e2a972d83be73cb86e582"
     ],
-    "retrieved": "2026-11-11T19:30:32.018738+00:00",
+    "retrieved": "2026-11-11T19:53:38.224186+00:00",
     "format": "PPD column projection of official current linked-data records",
     "coverage": "All current returned D/S/T records for this selector, not all nearby postcodes"
   },
@@ -78,7 +78,7 @@
       "fcb8418b97dff5dc8dad21fb6770470861d65d27aad4dff0f7b2fb695fdde23f",
       "8c54e9e67c5c9270fa79cbc4eb15cabf55322fab7a9fe3edf43d49eff5b79c8f"
     ],
-    "retrieved": "2026-11-11T19:31:10.628330+00:00",
+    "retrieved": "2026-11-11T19:54:20.388461+00:00",
     "format": "PPD column projection of official current linked-data records",
     "coverage": "All current returned D/S/T records for this selector, not all nearby postcodes"
   },
@@ -95,7 +95,7 @@
       "729a0203613d2179e5d1b0904e4c7b7ee5286aa5806948097013d8bd9ee28ad9",
       "28e58052216c0ee63728a6b44eabd645baa1c94a1b37a6520ee0a5eda10e20c2"
     ],
-    "retrieved": "2026-11-11T19:31:14.376945+00:00",
+    "retrieved": "2026-11-11T19:54:24.757105+00:00",
     "format": "PPD column projection of official current linked-data records",
     "coverage": "All current returned D/S/T records for this selector, not all nearby postcodes"
   }

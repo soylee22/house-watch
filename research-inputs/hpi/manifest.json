@@ -1,7 +1,7 @@
 {
-  "source": "https://publicdata.landregistry.gov.uk/market-trend-data/house-price-index-data/Average-prices-Property-Type-2026-08.csv",
+  "source": "https://publicdata.landregistry.gov.uk/market-trend-data/house-price-index-data/Average-prices-Property-Type-2026-08.csv?utm_medium=GOV.UK&utm_source=datadownload&utm_campaign=average_price_property_price&utm_term=9.30_21_10_26",
   "sha256": "660a5da963e4a6bffc7ca8bf8a3b482cd2e9f77c384af4d5d42b01621415d850",
   "release_date": "2026-10-21",
   "observation_end": "2026-08",
-  "retrieved": "2026-11-11"
+  "retrieved": "2026-11-11T19:54:26.858947+00:00"
 }
