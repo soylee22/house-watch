@@ -14,6 +14,7 @@ async function getJSON(url){const response=await fetch(url,{cache:'no-store'});i
 async function selectMarket(){
   const version=++requestVersion;
   market=research.markets.find(m=>m.name===$('market').value);
+  $('predictor-market').value=market.name;
   $('sale-count').textContent='…';
   try{
     if(!cache.has(market.slug))cache.set(market.slug,await getJSON('data/'+market.slug+'.json'));
@@ -187,10 +188,12 @@ async function init(){
     $('date-range').textContent=research.profile.first_date+' to '+research.profile.last_date;
     $('market').innerHTML='<optgroup label="Core markets">'+research.markets.filter(m=>m.core).map(m=>'<option>'+esc(m.name)+'</option>').join('')+'</optgroup><optgroup label="Wider comparison areas">'+research.markets.filter(m=>!m.core).map(m=>'<option>'+esc(m.name)+'</option>').join('')+'</optgroup>';
     $('market').disabled=false;$('market').value='Didcot';
+    $('predictor-market').innerHTML=$('market').innerHTML;$('predictor-market').disabled=false;$('predictor-market').value='Didcot';
     $('from-year').innerHTML=Array.from({length:32},(_,i)=>'<option>'+(1995+i)+'</option>').join('');$('from-year').value='1995';
     $('valuation-month').max=research.profile.latest_hpi_month;$('valuation-month').value=research.profile.latest_hpi_month;
     renderEvidence();await selectMarket();
     $('market').addEventListener('change',selectMarket);
+    $('predictor-market').addEventListener('change',event=>{$('market').value=event.target.value;selectMarket()});
     for(const id of ['history-type','from-year','sale-search'])$(id).addEventListener(id==='sale-search'?'input':'change',()=>{page=0;renderHistory()});
     $('prev').addEventListener('click',()=>{page--;renderHistory()});$('next').addEventListener('click',()=>{page++;renderHistory()});
     $('price-form').addEventListener('submit',event=>{event.preventDefault();estimate()});
