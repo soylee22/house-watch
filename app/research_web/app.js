@@ -18,6 +18,9 @@ async function selectMarket(){
   market=research.markets.find(m=>m.name===$('market').value);
   $('predictor-market').value=market.name;
   $('sale-count').textContent='…';
+  for(const control of $('price-form').querySelectorAll('input,select,button'))if(control.id!=='predictor-market')control.disabled=true;
+  $('estimate-price').textContent='Loading evidence…';$('estimate-range').textContent='';$('estimate-context').textContent='Loading the selected market and dated physical evidence.';
+  $('address-breakdown').hidden=true;$('attribute-breakdown').hidden=true;$('ask-comparison').hidden=true;
   try{
     if(!cache.has(market.slug))cache.set(market.slug,await getJSON('data/'+market.slug+'.json'));
     if(research.attributes_available&&!attributeCache.has(market.slug))attributeCache.set(market.slug,await getJSON('data/attributes-'+market.slug+'.json'));
@@ -31,7 +34,9 @@ async function selectMarket(){
     $('median-caption').textContent='2025, '+number(latest.length)+' standard sales';
     $('history-years').textContent=rows.length?String(1+Number(rows[0][0].slice(0,4))-Math.min(...rows.map(r=>Number(r[0].slice(0,4))))):'0';
     $('count-caption').textContent=market.name;
-    populateRoads();prepareProperties();renderHistory();estimate();
+    populateRoads();prepareProperties();renderHistory();
+    for(const control of $('price-form').querySelectorAll('input,select,button'))control.disabled=false;
+    estimate();
   }catch(error){$('load-error').hidden=false;$('load-error').textContent=error.message;}
 }
 
