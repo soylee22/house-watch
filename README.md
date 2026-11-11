@@ -38,3 +38,12 @@ Household shortlists, feedback, mailbox records and recipient settings are exclu
 Contains HM Land Registry data © Crown copyright and database right 2021. This data is licensed under the Open Government Licence v3.0.
 
 Contains National Statistics data and OS data © Crown copyright and database right 2026.
+
+
+## Address predictor
+
+In the price predictor, enter a postcode, house number or street, then select the exact recorded property. The calculator shows the previous achieved sale, local market movement, recorded-factor adjustment, independent area/road estimate and the learned blend. A previous sale at least one year old is required. Conflicting records and material physical changes withhold that adjustment.
+
+The address method had 7.0% median absolute percentage error on 2,351 supported later sales. The base model on those same houses had 12.9%. This is a matched subset, not an accuracy claim for every house. Nominal 80% age-specific intervals covered 79.0% overall, with weaker local coverage reported on screen. Bedrooms and floor area still have no separately estimated effect.
+
+Address search and the alteration checkbox remain in the browser. They are not submitted to a backend or added to public data. The existing weekly workflow refits and exports the address component alongside the base model.

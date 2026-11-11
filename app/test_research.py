@@ -65,6 +65,34 @@ class RefreshTest(unittest.TestCase):
 
 @unittest.skipUnless(find_spec('sklearn'),'Research dependencies are not installed')
 class ModelTest(unittest.TestCase):
+    def test_address_history_uses_only_latest_strictly_earlier_supported_sale(self):
+        from address_model import prior_pairs
+        from price_model import enrich
+        def row(stamp,price=300000,**changes):
+            return enrich(dict(id=stamp,date=stamp,market='Didcot',type='D',tenure='F',new_build='N',number='1',unit='',street='OAK ROAD',postcode='OX11 7AA',hpi=100,price=price)|changes)
+        rows=[row('2020-01-01'),row('2024-01-01'),row('2024-06-01'),row('2025-07-01')]
+        pairs=prior_pairs(rows)
+        self.assertEqual([(r['date'],p['date']) for r,p,_ in pairs],[('2024-01-01','2020-01-01'),('2025-07-01','2024-06-01')])
+        self.assertEqual(prior_pairs([row('2020-01-01'),row('2024-01-01',number='2')]),[])
+        self.assertEqual(prior_pairs([row('2020-01-01'),row('2024-01-01',type='S')]),[])
+        self.assertEqual(prior_pairs([row('2020-01-01'),row('2020-01-01',price=400000),row('2024-01-01')]),[])
+
+    def test_address_weights_and_intervals_exclude_final_test_prices(self):
+        from address_model import evaluate_address_model
+        from price_model import enrich
+        rows=[]
+        for year in range(2010,2026):
+            for i in range(400):
+                month=1 if i<200 else 7
+                rows.append(enrich(dict(id=f'{year}-{i}',date=f'{year}-{month:02}-01',market='Didcot',type='D',tenure='F',new_build='N',number=str(i),unit='',street='OAK ROAD',postcode='OX11 7AA',hpi=100,price=300000*(.75+(i%10)/20))))
+        model={'kind':'median','groups':{'Didcot|D':math.log(3000)},'global':math.log(3000)}
+        a,report=evaluate_address_model(model,rows)
+        changed=[r|{'price':r['price']*2} if r['date'].startswith('2025') else r for r in rows]
+        b,_=evaluate_address_model(model,changed)
+        self.assertEqual(a,b)
+        self.assertEqual(a['weights']['1 to 5 years']['weight'],1)
+        self.assertLess(report['test']['mae'],report['base_on_same_sales']['mae'])
+
     def test_public_export_excludes_household_canaries(self):
         from build_research_site import build
         from price_model import AREA,TYPE_NAMES

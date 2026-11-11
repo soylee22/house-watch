@@ -138,6 +138,9 @@ def evaluate(rows):
     by_type={k:metrics([r for r in test if r['type']==k],
                        [p for r,p in zip(test,pred) if r['type']==k],q) for k in TYPE_NAMES}
     new=[(r,p) for r,p in zip(test,pred) if unseen(r)]
+    from address_model import evaluate_address_model
+    address_config,address_evaluation=evaluate_address_model(model,rows)
+    address_heldout=address_evaluation.pop('_heldout',{}) if address_evaluation else {}
     # Freeze evaluation before production refit. Final test is never used to select.
     final=fit([r for r in rows if '2010-01-01'<=r['date']<'2026-01-01'],chosen['features'])
     final['log_interval_radius']=q
@@ -145,6 +148,7 @@ def evaluate(rows):
     final['name']=chosen['name']
     final['training_end']='2025-12-31'
     final['counts']=dict(Counter(r['road_type'] for r in rows if '2010-01-01'<=r['date']<'2026-01-01'))
+    final['address_model']=address_config
     evaluation={'selected':chosen['name'],'candidates':candidates,'by_market':by_market,'by_type':by_type,
                 'unseen_properties':metrics([r for r,p in new],[p for r,p in new],q),
                 'test':metrics(test,pred,q),'fold_counts':{'train':len(train),'selection':len(selection),'calibration':len(calibration),'test':len(test)},
@@ -153,7 +157,9 @@ def evaluate(rows):
                 'caveat':'Retrospective revised-data assessment. Type/area HPI for the target month is an observed market input. This does not test a real-time forecast before that index was published.',
                 'missing_features':['bedrooms','floor area','bathrooms','condition','parking'],
                 'bargain_flags':False}
+    evaluation['address_model']=address_evaluation
     heldout=[{'id':r['id'],'date':r['date'],'market':r['market'],'type':r['type'],'actual':r['price'],'predicted':round(p,2),'unseen_property':unseen(r)} for r,p in zip(test,pred)]
+    for row in heldout:row.update(address_heldout.get(row['id'],{}))
     return final,evaluation,heldout
 
 

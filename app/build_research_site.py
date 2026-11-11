@@ -40,7 +40,7 @@ def build(state,hpi,model_dir,destination):
                         'core':market in ('Didcot','Fleet','Flitwick','Hitchin','Linslade')})
     hpi_json={}
     for (area,month,kind),value in indices.items():
-        if month>='2010-01':hpi_json.setdefault(area,{}).setdefault(kind,{})[month]=value
+        hpi_json.setdefault(area,{}).setdefault(kind,{})[month]=value
     payload={'profile':profile,'evaluation':evaluation,'model':model,'markets':markets,'hpi':hpi_json,
              'columns':['date','price','type','street','postcode','number','unit','new_build','tenure','category'],
              'generated':profile['source_snapshot'],'hpi_release':profile['hpi_release'],

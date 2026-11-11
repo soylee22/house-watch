@@ -92,3 +92,30 @@ The final website fit uses 2010 to 2025 sales. The calculator stops at August 20
 Results: `outputs/2026-11-11-house-watch-research/`. Reusable model and refresh code: `tools/house-watch/price_model.py`, `research_data.py`, `research_pipeline.py` and `build_research_site.py`. The public export reads only official transaction tables. Canary tests confirm that feedback, message and settings markers remain excluded. No historical bedroom model or predictive bargain flag is released.
 
 The initial locality-only run preceded the west-ward correction. Its evaluation and held-out predictions are retained under `outputs/2026-11-11-house-watch-research/initial-locality-model/`. The correction uses postcode geography rather than test-price performance. Candidate specifications and time folds remain unchanged. The revised Linslade test has 178 sales, with MAE £65,630, median percentage error 11.4% and interval coverage 84.3%.
+
+
+## Exact-address prior-sale model, 11 November 2026
+
+The first calculator did not use a particular house's previous sale. The address extension matches postcode, street, primary address and sub-unit exactly. Similar street names and neighbouring house numbers do not merge. Unmatched addresses retain the broader area/road estimate.
+
+For a supported earlier sale, the reference is:
+
+```text
+prior-sale reference = previous achieved price
+                     × fitted current-date price / fitted previous-date price
+
+address estimate = geometric blend of the area/road estimate
+                   and this house's prior-sale reference
+```
+
+The ratio incorporates local type-specific HPI movement and supported recorded changes such as removal of an original new-build indicator. It does not add a guessed bedroom or extension premium. The previous price can retain information about the house's unmeasured size and layout at that sale. Later physical changes remain unknown.
+
+An earlier sale must precede the target by at least 365 days. The method rejects conflicting prices on the same day, changed type/tenure and current new-build status. It uses the latest earlier sale. It does not bypass a recent flip to choose a more convenient older price. The calculator withholds this adjustment when the user flags a material alteration.
+
+The base fit still ends in 2023 for evaluation. The prior-sale blend weight is selected from 0%, 25%, 50%, 75% and 100% using early 2024 sales. Separate age bands use their own selection data when at least 100 observations exist. Late 2024 calibrates age-specific ranges. Final test prices do not select the weights or ranges.
+
+On 2,351 supported 2025 repeated sales, median absolute percentage error was 7.0% and MAE £53,232. The area/road model on those same houses had median error 12.9% and MAE £88,348. These subset results must not be presented as performance for every house. Age-specific nominal 80% ranges covered 79.0% overall. Hitchin coverage was only 66.4%, which the active calculator reports for that market.
+
+Selected prior-sale weights are 75% for sales one to five years old, 100% for five to ten, and 75% for both older bands. These are predictive validation choices. They are not causal valuations of an additional room. The live model uses the production refit through 2025, while the declared errors refer to the earlier evaluation fit. All results remain retrospective revised-snapshot assessments with observed HPI inputs.
+
+The richer model still needs dated bedrooms and floor area. A fourth-bedroom effect must control for floor area and location rather than adding a uniform cash bonus. User-entered bedroom counts alone cannot identify that coefficient. Address queries and alteration choices stay in the browser. No household preference data enter the public build.
