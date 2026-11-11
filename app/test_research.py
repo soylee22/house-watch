@@ -43,6 +43,24 @@ class GeographyTest(unittest.TestCase):
                 self.assertEqual(db.execute('SELECT COUNT(*) FROM transactions').fetchone()[0],0)
 
 
+@unittest.skipUnless(find_spec('requests'),'Research HTTP dependencies are not installed')
+class RefreshTest(unittest.TestCase):
+    def test_hpi_release_uses_govuk_publication_metadata(self):
+        from research_pipeline import refresh_hpi
+        from unittest.mock import patch
+        from types import SimpleNamespace
+        collection='<a href="/government/statistical-data-sets/example">UK House Price Index: data downloads August 2026</a>'
+        page='<meta name="govuk:first-published-at" content="2026-10-21T10:17:24+01:00"><a href="https://publicdata.landregistry.gov.uk/example.csv">Average price by property type</a>'
+        def response(text='',content=b'csv'):
+            return SimpleNamespace(text=text,content=content,raise_for_status=lambda:None)
+        with tempfile.TemporaryDirectory() as folder:
+            with patch('requests.get',side_effect=[response(collection),response(page),response()]):
+                refresh_hpi(Path(folder))
+            m=json.loads((Path(folder)/'manifest.json').read_text())
+            self.assertEqual(m['release_date'],'2026-10-21')
+            self.assertEqual(m['observation_end'],'2026-08')
+
+
 @unittest.skipUnless(find_spec('sklearn'),'Research dependencies are not installed')
 class ModelTest(unittest.TestCase):
     def test_public_export_excludes_household_canaries(self):

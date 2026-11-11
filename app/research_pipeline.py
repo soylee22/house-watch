@@ -35,7 +35,7 @@ def refresh_hpi(destination):
     url=candidates[0]
     if urlsplit(url).hostname!='publicdata.landregistry.gov.uk':raise ValueError('Unexpected official HPI download host')
     response=requests.get(url,timeout=120);response.raise_for_status()
-    date=soup.find('meta',attrs={'property':'article:published_time'})
+    date=soup.find('meta',attrs={'name':'govuk:first-published-at'}) or soup.find('meta',attrs={'property':'article:published_time'})
     if date:release=date['content'][:10]
     else:
         tag=soup.find('time',attrs={'datetime':True})

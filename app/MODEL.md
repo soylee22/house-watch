@@ -1,6 +1,6 @@
 # House Watch price model specification
 
-11 November 2026. Status: specified, not fitted.
+11 November 2026. Status: reduced-feature models fitted and tested. Historical physical-attribute enrichment remains incomplete.
 
 Owning plan: `Plans/2026-11-08-house-watch.md`. Thread: `wiki/projects/house-watch.md`.
 
@@ -75,3 +75,18 @@ Expose the chosen model version, training cutoff, data vintage and supported geo
 Provide historical sale exploration, road and market comparisons, model evaluation and source health. Keep household feedback, mailbox records and personal settings out of public exports. Decide authenticated hosting versus a public research projection before deployment.
 
 Store fitted models, manifests, metrics and held-out predictions under `private/house-watch/models/`. Put reusable code under `tools/house-watch/`. Publish a reviewed results summary under a dated `outputs/` directory. This document does not certify that any model has been fitted or validated.
+
+
+## First fitted result, 11 November 2026
+
+The current linked-data snapshot contains 119,986 house transactions from 1995 to 2026. Standard transactions with a supported local type-specific index supply 117,822 model-supported records across all dates. The estimation window starts in 2010. Additional category B transactions and unsupported index months are excluded from modelling and retained in the research inventory.
+
+Model choice used 1,385 January to June 2024 sales. The selected postcode-sector and road model had a selection MAE of £89,225. The quarter-effect alternative had £89,232. Selection therefore retained the simpler road model with HPI time adjustment. The quarter-effect model remains a reported candidate rather than being presented as the deployed specification.
+
+The locked 2025 test contains 3,634 sales. The selected model had MAE £93,566, median absolute percentage error 13.1%, and mean prediction error of minus £15,634. The simple indexed market/type median had MAE £106,840. The improvement was 12.4% overall. These are revised-snapshot conditional valuations using the observed target-month HPI, not real-time forecasts.
+
+The nominal 80% prediction interval covered 80.2% of test sales overall, with median width about £249,400. Coverage was 75.0% in Hitchin and 72.5% in its surrounding comparison area. Local calibration remains inadequate for confident house-specific claims. The reserved-property subset contained 561 sales, with MAE £93,739 and coverage 77.9%.
+
+The final website fit uses 2010 to 2025 sales. The calculator stops at August 2026, the latest published index month. It withholds combinations with fewer than 30 training sales of the selected house type or fewer than 100 training sales across that market. Linslade's incomplete locality-based geography fails this support check. A broader Leighton Buzzard comparison is labelled separately.
+
+Results: `outputs/2026-11-11-house-watch-research/`. Reusable model and refresh code: `tools/house-watch/price_model.py`, `research_data.py`, `research_pipeline.py` and `build_research_site.py`. The public export reads only official transaction tables. Canary tests confirm that feedback, message and settings markers remain excluded. No historical bedroom model or predictive bargain flag is released.

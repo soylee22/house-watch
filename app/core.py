@@ -16,6 +16,7 @@ from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[2]
 STATE = ROOT / "private/house-watch"
+PUBLIC_RESEARCH_URL = 'https://soylee22.github.io/house-watch/'
 TOWNS = {
     "Linslade": {"county": "Bedfordshire", "lat": 51.918, "lon": -0.678, "station": "Leighton Buzzard"},
     "Didcot": {"county": "Oxfordshire", "lat": 51.609, "lon": -1.244, "station": "Didcot Parkway"},
@@ -426,6 +427,8 @@ def digest(db, recipients, day=None, initial=False):
     content = [f"<h1>House Watch</h1><p>{esc(day)} · Five places · Four-plus bedrooms · Up to £700,000</p>",
                "<p><strong>Partial observed inventory.</strong> Listings below were advertised at the shown observation dates. Current availability and exact station routes need checking. £700,000 is a search ceiling, not a spending target.</p>"]
     plain = [subject, "Partial observed inventory. Availability requires checking."]
+    content.append(f"<p><a href='{PUBLIC_RESEARCH_URL}'>Explore historical sales and the price model</a>. The public research model does not yet adjust for bedrooms or floor area. Your shortlist and reactions remain private.</p>")
+    plain.append('Historical sales and model: '+PUBLIC_RESEARCH_URL+' . Bedrooms and floor area are not yet model inputs. Household feedback remains private.')
     for p in top:
         title = f"£{p['price']:,} · {p['bedrooms']} beds · {p['house_type']} · {p['title']}"
         content.append(f"<section style='padding:20px 0;border-top:1px solid #ddd'><h2>{esc(title)}</h2><p>{esc(p['town'])}, {esc(p['county'])} · Last observed {esc(p['last_seen'][:10])}</p><p>{esc(' · '.join(p['fit_reasons']))}</p><p>Parking: {esc(p.get('parking','unknown'))}. Size: {esc(str(p.get('area_m2'))+' m²' if p.get('area_m2') else 'unknown')}.</p><p><a href='{esc(p['url'])}'>Original listing</a></p></section>")
