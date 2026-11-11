@@ -1,0 +1,35 @@
+{
+  "counts": {
+    "source_rows": 393308,
+    "unmatched_or_ambiguous": 334527,
+    "exact_address_rows": 58781,
+    "invalid_area_date_or_certificate": 214
+  },
+  "certificates": 58567,
+  "matched_properties": 43294,
+  "properties_by_market": {
+    "Didcot": 7100,
+    "Leighton Buzzard context": 7927,
+    "Hitchin": 5343,
+    "Linslade": 2556,
+    "Hitchin surrounds": 6118,
+    "Flitwick": 2955,
+    "Didcot surrounds": 2662,
+    "Fleet": 5280,
+    "Fleet surrounds": 3353
+  },
+  "sources": [
+    {
+      "file": "energy-certificates.csv",
+      "sha256": "7f84ddfbc51ae2d5a853a846e65420ed6c7288c11163393f5c2ca31ab6c397f2",
+      "bytes": 420295530
+    }
+  ],
+  "matching": "Exact postcode and complete address prefix, unique PPD identity. No fuzzy or neighbouring-number matches.",
+  "bedrooms_available": false,
+  "raw_addresses_exported": false,
+  "source": "https://get-energy-performance-data.communities.gov.uk/",
+  "retrieved": "2026-11-11",
+  "observation_end": "2026-10-31",
+  "raw_epc_addresses_published": false
+}

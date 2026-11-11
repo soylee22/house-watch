@@ -118,6 +118,44 @@ class ModelTest(unittest.TestCase):
             self.assertFalse((destination/'settings.json').exists())
             sale=json.loads((destination/'data'/'didcot.json').read_text())[0]
             self.assertEqual(sale[3],'PUBLIC ROAD')
+            from property_attributes import property_id
+            attributes=root/'attributes.json'
+            attributes.write_text(json.dumps([{'property_id':property_id({'postcode':'OX11 7AA','number':'1','unit':'','street':'PUBLIC ROAD'}),
+                'source':'official EPC','area_m2':110,'certificate_id':'fixture','inspection_date':'2019-01-01','available_date':'2019-01-02',
+                'address1':secret,'assessor_email':secret,'uprn':secret}]))
+            (models/'area-result.json').write_text('{"model":{"enabled":false},"evaluation":{}}')
+            (models/'area-coverage.json').write_text('{}')
+            build(state,hpi,models,destination,attributes_path=attributes)
+            self.assertFalse(any(secret in p.read_text() for p in destination.rglob('*') if p.is_file()))
+            projection=json.loads((destination/'data'/'attributes-didcot.json').read_text())
+            self.assertEqual(projection['OX11 7AA|1||PUBLIC ROAD'][0]['area_m2'],110)
+
+    def test_size_model_learns_area_without_selecting_on_final_test(self):
+        from price_model import enrich
+        from property_attributes import property_id
+        from area_model import evaluate,predict
+        rows=[];observations=[]
+        for year in range(2010,2026):
+            for i in range(400):
+                area=60+(i%20)*5
+                row=enrich(dict(id=f'{year}-{i}',date=f'{year}-'+('03' if i<200 else '09')+'-01',market='Didcot',type='D',
+                                tenure='F',new_build='N',number=str(i),unit='',street='OAK ROAD',postcode='OX11 7AA',hpi=100,
+                                price=300000*(area/100)**.7))
+                rows.append(row)
+                observations.append(dict(property_id=property_id(row),available_date=f'{year}-01-02',inspection_date=f'{year}-01-01',
+                                         area_m2=area,habitable_rooms=6,built_form='Detached',property_type='House',certificate_id=f'{year}-{i}'))
+        first,_,_=evaluate(rows,observations)
+        changed=[r|{'price':r['price']*2} if r['date'].startswith('2025') else r for r in rows]
+        second,_,_=evaluate(changed,observations)
+        a=first['evaluation'];b=second['evaluation']
+        self.assertTrue(a['enabled'])
+        self.assertEqual(a['selected'],b['selected'])
+        self.assertEqual(a['log_interval_radius'],b['log_interval_radius'])
+        self.assertEqual(a['evaluation_area_coefficient'],b['evaluation_area_coefficient'])
+        self.assertLess(a['test']['mae'],a['base_on_same_sales']['mae'])
+        self.assertIsNone(a['bedroom_coefficient'])
+        model=first['model'];r=rows[0]|{'area_m2':80}
+        self.assertGreater(predict(model,r|{'area_m2':120}),predict(model,r))
 
     def test_final_test_prices_do_not_choose_model_or_calibrate_range(self):
         from price_model import enrich,evaluate

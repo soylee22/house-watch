@@ -47,3 +47,8 @@ In the price predictor, enter a postcode, house number or street, then select th
 The address method had 7.0% median absolute percentage error on 2,351 supported later sales. The base model on those same houses had 12.9%. This is a matched subset, not an accuracy claim for every house. Nominal 80% age-specific intervals covered 79.0% overall, with weaker local coverage reported on screen. Bedrooms and floor area still have no separately estimated effect.
 
 Address search and the alteration checkbox remain in the browser. They are not submitted to a backend or added to public data. The existing weekly workflow refits and exports the address component alongside the base model.
+
+
+Dated floor area is available for matched houses from an official domestic EPC extract through October 2026. Selecting a supported house fills m², certificate date and energy rating. Changing m² changes the separate fitted size-model estimate. The previous-sale method remains a comparison. Bedroom entries are reference information and do not change price. EPC habitable rooms are not bedrooms.
+
+The size model has 7.7% median error on 2,337 later completed sales with dated certificates. Its original area/road baseline has 12.8% on those same sales. These are retrospective conditional estimates using observed HPI, not forecasting results. The EPC snapshot is dated and does not refresh automatically with weekly sales/HPI updates. Public inputs exclude raw EPC address fields, contacts, account information and household records.

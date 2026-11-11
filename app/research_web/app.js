@@ -6,7 +6,9 @@ const pct=n=>(100*n).toFixed(1)+'%';
 const types={D:'Detached',S:'Semi-detached',T:'Terraced'};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let research,market,rows=[],properties=[],page=0,requestVersion=0;
+let attributes={},areaOrigin='';
 const cache=new Map();
+const attributeCache=new Map();
 const quantile=(xs,p)=>{const a=[...xs].sort((x,y)=>x-y);if(!a.length)return 0;const at=(a.length-1)*p,i=Math.floor(at);return a[i]+(a[Math.min(i+1,a.length-1)]-a[i])*(at-i)};
 
 async function getJSON(url){const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw Error('Could not load research data ('+response.status+').');return response.json()}
@@ -18,8 +20,10 @@ async function selectMarket(){
   $('sale-count').textContent='…';
   try{
     if(!cache.has(market.slug))cache.set(market.slug,await getJSON('data/'+market.slug+'.json'));
+    if(research.attributes_available&&!attributeCache.has(market.slug))attributeCache.set(market.slug,await getJSON('data/attributes-'+market.slug+'.json'));
     if(version!==requestVersion)return;
     rows=cache.get(market.slug);page=0;
+    attributes=attributeCache.get(market.slug)||{};
     $('market-description').textContent=market.name==='Linslade'?'Linslade uses a west-ward postcode proxy. Other Leighton Buzzard records remain comparison context.':market.core?'Core market. Nearby localities are listed separately as comparison areas.':'Comparison geography. This is a wider postal area, not the named core town.';
     $('sale-count').textContent=number(rows.length);
     const latest=rows.filter(r=>r[0].startsWith('2025')&&r[9]==='A');
@@ -48,7 +52,7 @@ function prepareProperties(){
     const key=[r[4],r[5],r[6],r[3]].map(s=>s.trim().toUpperCase()).join('|');
     if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(r);
   }
-  properties=[...grouped.values()].map(history=>({history:history.sort((a,b)=>b[0].localeCompare(a[0])),label:titleCase([history[0][6],history[0][5],history[0][3]].filter(Boolean).join(' '))+' · '+history[0][4]})).sort((a,b)=>a.label.localeCompare(b.label));
+  properties=[...grouped.entries()].map(([key,history])=>({key,history:history.sort((a,b)=>b[0].localeCompare(a[0])),label:titleCase([history[0][6],history[0][5],history[0][3]].filter(Boolean).join(' '))+' · '+history[0][4]})).sort((a,b)=>a.label.localeCompare(b.label));
   $('property-search').value='';$('material-change').checked=false;$('road').disabled=false;filterProperties();
 }
 function filterProperties(){
@@ -56,6 +60,7 @@ function filterProperties(){
   const matches=q.length>=3?properties.map((p,i)=>({p,i})).filter(({p})=>normal(p.label).includes(q)):[];
   $('property').innerHTML='<option value="">Area or road estimate, no address selected</option>'+matches.slice(0,100).map(({p,i})=>'<option value="'+i+'">'+esc(p.label)+'</option>').join('');
   $('road').disabled=false;
+  $('area-m2').value='';$('bedrooms').value='';areaOrigin='';showAreaEvidence(true);
   $('property-match-note').textContent=q.length<3?'Enter at least three characters of a postcode or address. Lookup stays in this browser.':matches.length?number(matches.length)+' recorded addresses. Select the exact house. '+(matches.length>100?'Narrow the search to see all matches.':''):'No recorded address matches. Check the area or use a broader road estimate.';
 }
 function chooseProperty(){
@@ -67,7 +72,34 @@ function chooseProperty(){
     if([...$('road').options].some(o=>o.value===road))$('road').value=road;else $('road').value='';
     $('material-change').checked=false;
   }
+  showAreaEvidence(true);
   estimate();
+}
+function datedAttribute(){
+  if($('property').value==='')return null;
+  const property=properties[Number($('property').value)],month=$('valuation-month').value;
+  if(!/^\d{4}-\d{2}$/.test(month))return null;
+  const [y,m]=month.split('-').map(Number),cutoff=new Date(Date.UTC(y,m,0)).toISOString().slice(0,10);
+  const history=(attributes[property.key]||[]).filter(r=>r.available_date<=cutoff&&r.inspection_date<=cutoff).sort((a,b)=>a.available_date.localeCompare(b.available_date)||a.inspection_date.localeCompare(b.inspection_date));
+  const latest=history[history.length-1];if(!latest)return null;
+  const peers=history.filter(r=>r.available_date===latest.available_date);
+  if(new Set(peers.map(r=>[r.area_m2,r.habitable_rooms,r.built_form].join('|'))).size>1)return null;
+  if((Date.parse(cutoff)-Date.parse(latest.inspection_date))/86400000>5*365.25)return null;
+  const form=(latest.built_form||'').toLowerCase(),expected=form.includes('semi')?'S':form.includes('terrace')?'T':form==='detached'?'D':null;
+  if(latest.property_type&&!['house','bungalow'].includes(latest.property_type.toLowerCase()))return null;
+  if(expected&&expected!==$('estimate-type').value)return null;
+  return latest;
+}
+function showAreaEvidence(fill=false){
+  const observation=datedAttribute();
+  if(fill||areaOrigin==='certificate'){
+    $('area-m2').value=observation?observation.area_m2:'';areaOrigin=observation?'certificate':'';
+  }
+  if(areaOrigin==='user'){$('area-source-note').textContent='User-entered internal area. Check the measurement basis and whether it describes the selected valuation date.';return;}
+  if(observation){
+    const certificate=observation.certificate_id;
+    $('area-source-note').innerHTML=esc(observation.area_m2+' m² · '+Math.round(observation.area_m2*10.7639)+' sq ft · EPC assessed '+observation.inspection_date+' · energy rating '+(observation.energy_rating||'unknown')+'. ')+(/^\d{4}(?:-\d{4}){4}$/.test(certificate)?'<a href="https://find-energy-certificate.service.gov.uk/energy-certificate/'+esc(certificate)+'" target="_blank" rel="noopener noreferrer">Check certificate ↗</a>':'');
+  }else $('area-source-note').textContent='No unambiguous compatible EPC area, at most five years old, was available by this valuation month. Enter a known internal area or use the previous-sale method.';
 }
 function rowFeatures(r){
   const sector=r[4].replace(/ /g,'').toUpperCase().slice(0,-2);
@@ -115,7 +147,8 @@ function estimate(){
   const support=market.training_by_type[kind]||0,total=Object.values(market.training_by_type).reduce((a,b)=>a+b,0);
   $('ask-comparison').hidden=true;
   $('address-breakdown').hidden=true;
-  if(!index||support<30||total<100){
+  $('attribute-breakdown').hidden=true;$('estimate-method').textContent='ACHIEVED-PRICE ESTIMATE';
+  if(!index||month<'2010-01'||month>research.profile.latest_hpi_month||support<30||total<100){
     $('estimate-price').textContent='Insufficient evidence';$('estimate-range').textContent=!index?'Choose a month with a published local index.':'Too few supported '+types[kind].toLowerCase()+' sales.';
     $('estimate-context').textContent=market.name==='Linslade'?'Linslade address coverage remains incomplete. Select Leighton Buzzard context for a clearly labelled broader comparison.':'No numerical estimate is released for this combination.';
     $('estimate-warning').textContent='No price is shown when the market, house type or valuation month lacks support. A broader comparison is not a substitute for a verified local valuation.';
@@ -166,6 +199,31 @@ function estimate(){
     const local=research.evaluation.address_model?.by_market?.[market.name];
     if(local?.n>=30)$('estimate-warning').textContent+=' In '+market.name+', the address model’s nominal 80% ranges covered '+pct(local.interval_coverage)+' of '+number(local.n)+' historical test sales.';
   }
+  const areaValue=Number($('area-m2').value),method=$('valuation-method').value,areaModel=research.area_model;
+  const wantsArea=method==='area'||(method==='auto'&&$('area-m2').value!=='');
+  if(method==='previous'&&areaValue>0)$('estimate-context').textContent+=' The selected previous-sale method does not use the floor-area input.';
+  if(wantsArea){
+    const areaSupport=areaModel?.training_by_market_type?.[values.market_type]||0;
+    if(!areaModel?.enabled||!Number.isFinite(areaValue)||areaValue<areaModel.area_min_m2||areaValue>areaModel.area_max_m2||areaSupport<30){
+      $('estimate-price').textContent='Size estimate unavailable';$('estimate-range').textContent=areaModel?.enabled?'Use '+Math.ceil(areaModel.area_min_m2)+' to '+Math.floor(areaModel.area_max_m2)+' m² with at least 30 matched local/type training sales.':'No validated floor-area model is available.';
+      $('estimate-context').textContent='Enter supported internal floor area, or choose the previous-sale / area method.';
+      $('estimate-warning').textContent='No numerical size adjustment is made outside the fitted support.';$('ask-comparison').hidden=true;$('address-breakdown').hidden=true;return;
+    }
+    let log=areaModel.intercept;
+    for(const [feature,weights] of Object.entries(areaModel.weights))log+=weights[values[feature]]||0;
+    log+=areaModel.log_area_coefficient*Math.log(areaValue/areaModel.reference_area_m2);
+    const sizePrice=Math.exp(log)*index,sizeRadius=areaModel.log_interval_radius;
+    $('estimate-method').textContent='FLOOR-AREA MODEL · ACHIEVED PRICE';
+    $('estimate-price').textContent=money(Math.round(sizePrice/1000)*1000);
+    $('estimate-range').textContent=money(Math.round(sizePrice*Math.exp(-sizeRadius)/1000)*1000)+' to '+money(Math.round(sizePrice*Math.exp(sizeRadius)/1000)*1000)+' · nominal 80% range';
+    $('estimate-context').textContent=market.name+' · '+types[kind]+' · '+month+' · '+areaValue+' m². '+number(areaSupport)+' dated local/type training sales. Floor area changes this estimate. The previous-sale method is a separate comparison.';
+    $('attribute-breakdown').hidden=false;
+    $('attribute-breakdown').innerHTML='<strong>Physical evidence used</strong><dl><div><dt>Internal floor area</dt><dd>'+esc(areaValue)+' m² · '+number(Math.round(areaValue*10.7639))+' sq ft</dd></div><div><dt>Measurement source</dt><dd>'+esc(areaOrigin==='certificate'?'Dated official EPC':'User-entered, not verified')+'</dd></div><div><dt>Bedrooms</dt><dd>'+esc($('bedrooms').value||'Unknown')+' · no fitted bedroom adjustment</dd></div><div><dt>Previous-sale / area method</dt><dd>'+money(Math.round(centre/1000)*1000)+' · separate estimate</dd></div></dl><p>Floor area already captures much of the difference between larger and smaller houses. An extra bedroom is not given an invented cash premium. EPC area may differ from an agent’s floor-plan total.</p>';
+    if(!$('address-breakdown').hidden)$('address-breakdown').innerHTML='<p><strong>Previous-sale method, for comparison</strong></p>'+$('address-breakdown').innerHTML;
+    const local=research.area_evaluation?.by_market?.[market.name];
+    $('estimate-warning').textContent='This model adjusts for floor area. It does not separately price bedrooms, condition, parking or an extension’s quality. The '+month+' HPI comes from the release on '+research.hpi_release+'. '+(areaOrigin==='user'?'The measurement is entered by you. ':'')+(local?.n>=30?'In '+market.name+', nominal 80% size-model ranges covered '+pct(local.interval_coverage)+' of '+number(local.n)+' test sales.':'');
+    if(asking>0){const gap=asking/sizePrice-1;$('ask-comparison').hidden=false;$('ask-comparison').textContent='Asking price is '+pct(Math.abs(gap))+' '+(gap>=0?'above':'below')+' the size-model median. This alone does not establish value.';}
+  }
 }
 
 function renderEvidence(){
@@ -179,6 +237,9 @@ function renderEvidence(){
   $('geography-note').textContent=research.geography_note;
   const address=e.address_model;
   if(address?.enabled){$('address-evidence').hidden=false;$('address-evidence').textContent='Exact-address test: '+number(address.test.n)+' later sales with a supported earlier sale. Median absolute percentage error '+pct(address.test.median_ape)+', MAE '+money(address.test.mae)+'. The area/road model on these same houses had MAE '+money(address.base_on_same_sales.mae)+'. Age-specific nominal 80% ranges covered '+pct(address.age_interval_coverage)+'. This is a revised-data conditional test. Physical alterations remain unmeasured.';}
+  const area=research.area_evaluation;
+  if(area?.enabled){$('area-evidence').hidden=false;$('area-evidence').textContent='Floor-area test: '+number(area.test.n)+' later sales with a dated EPC. Median error '+pct(area.test.median_ape)+', MAE '+money(area.test.mae)+'. The original area/road model on these same sales had median error '+pct(area.base_on_same_sales.median_ape)+' and MAE '+money(area.base_on_same_sales.mae)+'. Nominal 80% ranges covered '+pct(area.test.interval_coverage)+'. Certificates were available by each sale date. Bedrooms are not separately modelled.';}
+  $('epc-note').textContent=research.epc_note||'Dated physical-attribute evidence is not available in this snapshot.';
 }
 
 async function init(){
@@ -197,7 +258,9 @@ async function init(){
     for(const id of ['history-type','from-year','sale-search'])$(id).addEventListener(id==='sale-search'?'input':'change',()=>{page=0;renderHistory()});
     $('prev').addEventListener('click',()=>{page--;renderHistory()});$('next').addEventListener('click',()=>{page++;renderHistory()});
     $('price-form').addEventListener('submit',event=>{event.preventDefault();estimate()});
-    for(const id of ['estimate-type','valuation-month','road','tenure','new-build'])$(id).addEventListener('change',estimate);
+    for(const id of ['estimate-type','valuation-month','road','tenure','new-build'])$(id).addEventListener('change',()=>{showAreaEvidence();estimate()});
+    $('area-m2').addEventListener('input',()=>{areaOrigin='user';showAreaEvidence();estimate()});
+    $('bedrooms').addEventListener('input',estimate);$('valuation-method').addEventListener('change',estimate);
     $('asking').addEventListener('input',estimate);
     $('property-search').addEventListener('input',()=>{filterProperties();estimate()});
     $('property').addEventListener('change',chooseProperty);

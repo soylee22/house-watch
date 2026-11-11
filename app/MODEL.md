@@ -1,6 +1,6 @@
 # House Watch price model specification
 
-11 November 2026. Status: reduced-feature models fitted and tested. Historical physical-attribute enrichment remains incomplete.
+11 November 2026. Status: reduced-feature, exact-address and dated floor-area models fitted and tested. Bedroom enrichment remains incomplete.
 
 Owning plan: `Plans/2026-11-08-house-watch.md`. Thread: `wiki/projects/house-watch.md`.
 
@@ -119,3 +119,20 @@ On 2,351 supported 2025 repeated sales, median absolute percentage error was 7.0
 Selected prior-sale weights are 75% for sales one to five years old, 100% for five to ten, and 75% for both older bands. These are predictive validation choices. They are not causal valuations of an additional room. The live model uses the production refit through 2025, while the declared errors refer to the earlier evaluation fit. All results remain retrospective revised-snapshot assessments with observed HPI inputs.
 
 The richer model still needs dated bedrooms and floor area. A fourth-bedroom effect must control for floor area and location rather than adding a uniform cash bonus. User-entered bedroom counts alone cannot identify that coefficient. Address queries and alteration choices stay in the browser. No household preference data enter the public build.
+
+
+## Dated floor-area model, 11 November 2026
+
+Lee signed into the official EPC bulk service for a filtered domestic extract. Its 393,308 records cover five local authorities from September 2008 through October 2026. Exact address matching links 58,567 valid certificates to 43,294 distinct PPD house identities. The source CSV stays private. Published inputs retain only PPD-derived identity hashes and selected non-address certificate fields. Source addresses, contacts and account/download links are excluded.
+
+Certificate inspection and lodgement must both precede each sale. The latest available certificate must be at most five years old and compatible with the recorded house type. Conflicting same-date measurements are rejected. Later certificates are not assigned retrospectively. This yields 39,056 dated matched sales across all supported dates. Estimation still begins in 2010.
+
+The two declared candidates use place, tenure, build status, postcode-sector and road effects. One adds log(internal m² / 100). The other uses the same matched sample without area. Training ends in 2023 and reserves 15% of property identities. Early 2024 selects the size candidate. Late 2024 calibrates the range. There are 27,492 training sales, 936 selection sales, 1,179 calibration sales and 2,337 final 2025 test sales.
+
+The size model has MAE £54,571 and median absolute percentage error 7.7%. The original full-sample area/road model on those same test houses has MAE £94,084 and median error 12.8%. The nominal 80% range covers 80.1%, with a median width of £149,911. The 350 reserved-property test cases have MAE £51,328, median error 7.3% and 82.0% coverage. Hitchin range coverage is only 69.5%. Results remain conditional retrospective estimates with observed target-month HPI.
+
+The production area coefficient is 0.633 after refitting through 2025. This is a predictive size association, not a causal return to an extension. The browser withholds size estimates outside the production sample's first/99th percentile area bounds, 44 to 265 m², or with fewer than 30 matched training sales for the local/type combination. It identifies user-entered measurements separately from dated EPC evidence. The previous-sale method remains a separate comparison, rather than receiving an unvalidated additional size multiplier.
+
+EPC habitable rooms never become bedrooms. The bedroom reference field stays in the browser and does not affect price. No historical bedroom coefficient or bathroom/condition/parking premium is fitted. A dated bedroom source remains required. The EPC snapshot is fixed at this extract until another permitted refresh is acquired. Weekly public sales/HPI refreshes can reuse this dated snapshot without account credentials.
+
+Implementation: `property_attributes.py`, `area_model.py`, the optional attribute stage of `research_pipeline.py`, and the research website. Private full evidence: `private/house-watch/attributes-2026-11-11/`. Report: `outputs/2026-11-11-house-watch-attributes/delivery.md`.

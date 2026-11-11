@@ -163,7 +163,7 @@ def evaluate(rows):
     return final,evaluation,heldout
 
 
-def build(state,sources,hpi_path,output):
+def build(state,sources,hpi_path,output,attributes_path=None):
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
     with connect(state) as db:
         if any(db.execute('SELECT COUNT(*) FROM '+t).fetchone()[0] for t in ('properties','feedback','messages','outbox')):
@@ -177,6 +177,11 @@ def build(state,sources,hpi_path,output):
     (output/'model.json').write_text(json.dumps(model,separators=(',',':')))
     (output/'evaluation.json').write_text(json.dumps(evaluation,indent=2))
     (output/'heldout-predictions.json').write_text(json.dumps(heldout,separators=(',',':')))
+    if attributes_path:
+        from area_model import evaluate as evaluate_area
+        result,coverage,area_heldout=evaluate_area(rows,json.loads(Path(attributes_path).read_text()))
+        for name,value in [('area-result',result),('area-coverage',coverage),('area-heldout',area_heldout)]:
+            (output/(name+'.json')).write_text(json.dumps(value,separators=(',',':')))
     hpi_manifest=json.loads((Path(hpi_path).parent/'manifest.json').read_text())
     source_metadata=[json.loads(p.with_suffix('.json').read_text()) for p in sources if p.with_suffix('.json').exists()]
     profile={'sales_count':len(all_records),'model_supported_rows':len(rows),'excluded_from_model':excluded,

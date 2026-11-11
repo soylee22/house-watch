@@ -427,7 +427,7 @@ def digest(db, recipients, day=None, initial=False):
     content = [f"<h1>House Watch</h1><p>{esc(day)} · Five places · Four-plus bedrooms · Up to £700,000</p>",
                "<p><strong>Partial observed inventory.</strong> Listings below were advertised at the shown observation dates. Current availability and exact station routes need checking. £700,000 is a search ceiling, not a spending target.</p>"]
     plain = [subject, "Partial observed inventory. Availability requires checking."]
-    content.append(f"<p><a href='{PUBLIC_RESEARCH_URL}'>Explore historical sales and the price model</a>. The public research model does not yet adjust for bedrooms or floor area. Your shortlist and reactions remain private.</p>")
+    content.append(f"<p><a href='{PUBLIC_RESEARCH_URL}'>Explore historical sales and the price model</a>. The research site has a dated floor-area model and a separate previous-sale estimate. Bedroom premiums remain unmeasured. Your shortlist and reactions remain private.</p>")
     plain.append('Historical sales and model: '+PUBLIC_RESEARCH_URL+' . Bedrooms and floor area are not yet model inputs. Household feedback remains private.')
     for p in top:
         title = f"£{p['price']:,} · {p['bedrooms']} beds · {p['house_type']} · {p['title']}"

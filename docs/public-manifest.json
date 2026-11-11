@@ -1,27 +1,39 @@
 {
   "files": {
+    "index.html": "ce12018c5abe4369952f6a97e040e2aab5ab81603e22fe2709b4ec402a543bb3",
     ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "index.html": "3f4bb0199fdcf32e683d4ed0d7db73abea561b7de6ee6e2bae0ac8751b488108",
-    "app.js": "6c2d587ee6aaf97fa2e3647e89ded93cdb12b6e7474f4f1155007028c8e82a77",
     "style.css": "4911716ba1cfbefcbbbe07bbbf3b734799f14c2ba8c5088a5591ae69d87f7ac4",
-    "data/hitchin.json": "f58e57ec93d98dfdea07c5c6b1b5a9dfe1f62b86bd6ba67820c6fdfa247a4e82",
-    "data/hpi-manifest.json": "e23199d31f537951991f0c425ad1e2e892c7f054bc897ff32832c824322bea77",
-    "data/profile.json": "8f4959c0f2023c2751b0790273a90a23f04fba2904ca3145f3eb9192b9de996b",
-    "data/didcot-surrounds.json": "bf0441803fa25bae8f2b10c67827e92fd0125706ddc0ad0585def91c1332dece",
-    "data/fleet.json": "53b3f92b6dd75a621abde2a2d1e4fa21350b5c097ac5814166331a0b4681118e",
+    "app.js": "b56d7168f8d66001e5318d6fbf263faf0dbb5d128ab8d6ab7c21b34f00b2c662",
     "data/source-manifest.json": "869b18d07bcf2a13e7cca55aa99ac6bda8fc90d2f627d86967e723a650ea2476",
-    "data/research.json": "86884261e9ac73988f44f8787931665da6ed6cc389d20392375831a8e80d1cc8",
-    "data/evaluation.json": "3c5f277e184c6e47deefc323b972ab67caa3e2664f85fcc517c581e0e1668d9c",
+    "data/attributes-fleet-surrounds.json": "89a648bd8893c489331b4f6fca47c663d552dd329be4c9d621b59011cba04a27",
     "data/fleet-surrounds.json": "47e7012d70dffcae78b2977b15970432a1945cc32d3fbf0a8c3d801777d50b8d",
-    "data/didcot.json": "e6b669456248d30208a1b1e0cea8f67649a4791ba759f6f373f0e90d70f4f794",
-    "data/hitchin-surrounds.json": "51bce6cf4bf387bf5740ee62c92330f2856c70dd4c198f2fd796f8062cc6252a",
+    "data/attributes-hitchin.json": "3b10b1966afa587c4a91510a15d04711219d5ca0b0d7ae284e0338f75124b2d8",
     "data/leighton-buzzard-context.json": "c1577f8bb9c1abafecbe3519b9ddf239437155ee7d7e09653bdc4eb1a127b694",
+    "data/hitchin.json": "f58e57ec93d98dfdea07c5c6b1b5a9dfe1f62b86bd6ba67820c6fdfa247a4e82",
+    "data/attributes-flitwick.json": "68ac323c99cf99af345c62a8c76f7ad203a581cbdd3c8d2106b3d097199e7121",
+    "data/attributes-linslade.json": "3fe3e579230da4208cd8fe6c9501e113e9c010fd84a317038b3acad835997c62",
+    "data/hitchin-surrounds.json": "51bce6cf4bf387bf5740ee62c92330f2856c70dd4c198f2fd796f8062cc6252a",
     "data/linslade.json": "b9937784ab9714b872dff43f7f4a22b487b3866072ba2c5186ce62eccb35652e",
-    "data/flitwick.json": "c454b010bf8c1ac367e021612538aa1863dbe5cd73e988efbc1e5a3c5150de62"
+    "data/attributes-leighton-buzzard-context.json": "b4708dacfb2c73c3365a8d344055274ee8f6879f4f5e89d254c49540203ead1d",
+    "data/didcot.json": "e6b669456248d30208a1b1e0cea8f67649a4791ba759f6f373f0e90d70f4f794",
+    "data/didcot-surrounds.json": "bf0441803fa25bae8f2b10c67827e92fd0125706ddc0ad0585def91c1332dece",
+    "data/attribute-manifest.json": "5ca24198325c78a6089141748f910385308f929f2b0f231975382383c5b74e2f",
+    "data/hpi-manifest.json": "e23199d31f537951991f0c425ad1e2e892c7f054bc897ff32832c824322bea77",
+    "data/flitwick.json": "c454b010bf8c1ac367e021612538aa1863dbe5cd73e988efbc1e5a3c5150de62",
+    "data/attributes-didcot-surrounds.json": "2f9ce314c5e6fe44b21e6b8b9b2e1173d19722023646dd55ec78809ae16abf97",
+    "data/research.json": "e474c5c3a3bea2681202abe50420a36e9bb11d22b2b5ceb5c21dbfcd1c177176",
+    "data/attributes-fleet.json": "0989bf5e5ae35894589acc7c22c2b24a45ff36d391e89516c8a7c6e427c4930f",
+    "data/attributes-didcot.json": "6bf62d319bef61002e36ac833f1e9b4c3c98c2b01c07628f21ece7967abf9984",
+    "data/attributes-hitchin-surrounds.json": "37407e9b8e93325ba98cfcf3975c6e724fbd79bcfa12a9e15886f815b73e66e9",
+    "data/evaluation.json": "d661764ccb3f30aa8daa9fba7709e6d30a8784f223ad0c776fdd4724314e737b",
+    "data/profile.json": "8f4959c0f2023c2751b0790273a90a23f04fba2904ca3145f3eb9192b9de996b",
+    "data/fleet.json": "53b3f92b6dd75a621abde2a2d1e4fa21350b5c097ac5814166331a0b4681118e"
   },
   "source_tables": [
     "transactions",
-    "transaction_geography"
+    "transaction_geography",
+    "official EPC non-address projection"
   ],
-  "household_data_exported": false
+  "household_data_exported": false,
+  "epc_address_fields_exported": false
 }

@@ -66,13 +66,16 @@ def run(inputs,docs,refresh=False):
     if hashlib.sha256(hpi.read_bytes()).hexdigest()!=hpi_meta['sha256']:raise ValueError('HPI snapshot failed checksum')
     with tempfile.TemporaryDirectory() as tmp:
         root=Path(tmp)
-        build_model(root/'state',sources,hpi,root/'models')
-        build_site(root/'state',hpi,root/'models',docs)
+        attributes=inputs/'attributes'/'observations.json'
+        attributes=attributes if attributes.exists() else None
+        build_model(root/'state',sources,hpi,root/'models',attributes_path=attributes)
+        build_site(root/'state',hpi,root/'models',docs,attributes_path=attributes)
         # Published evaluation is reproducible without any private household data.
         for name in ('evaluation.json','profile.json'):
             shutil.copy2(root/'models'/name,docs/'data'/name)
     shutil.copy2(inputs/'ppd'/'manifest.json',docs/'data'/'source-manifest.json')
     shutil.copy2(inputs/'hpi'/'manifest.json',docs/'data'/'hpi-manifest.json')
+    if (inputs/'attributes'/'manifest.json').exists():shutil.copy2(inputs/'attributes'/'manifest.json',docs/'data'/'attribute-manifest.json')
     write_manifest(docs)
     print(json.dumps({'public_site':str(docs),'household_state_accessed':False}))
 
