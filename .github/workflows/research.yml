@@ -14,7 +14,6 @@ on:
 permissions:
   contents: write
   pages: write
-  id-token: write
 
 concurrency:
   group: public-research-pages
@@ -24,9 +23,6 @@ jobs:
   research:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
@@ -53,9 +49,23 @@ jobs:
             git -c user.name='House Watch' -c user.email='house-watch@users.noreply.github.com' commit -m 'Refresh official housing research snapshot'
             git push
           fi
-      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
-        with:
-          path: docs
-      - name: Deploy the public research website
-        id: deployment
-        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+      - name: Request and verify the standard Pages branch build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/pages/builds" --method POST
+          python - <<'PY'
+          import json, os, subprocess, time
+          expected=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          endpoint='repos/'+os.environ['GITHUB_REPOSITORY']+'/pages/builds/latest'
+          for attempt in range(60):
+              result=json.loads(subprocess.check_output(['gh','api',endpoint],text=True))
+              if result.get('commit')==expected and result['status']=='built':
+                  print('Verified the published research snapshot '+expected)
+                  break
+              if result.get('commit')==expected and result['status']=='errored':
+                  raise RuntimeError('Pages branch build failed')
+              time.sleep(5)
+          else:
+              raise TimeoutError('Pages has not completed the expected branch build')
+          PY
