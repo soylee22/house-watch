@@ -1,0 +1,25 @@
+{
+  "sales_count": 119986,
+  "model_supported_rows": 117822,
+  "excluded_from_model": {
+    "additional category B": 2080,
+    "no published type/area/month HPI": 84
+  },
+  "first_date": "1995-01-02",
+  "last_date": "2026-09-28",
+  "by_market": {
+    "Didcot": 19044,
+    "Didcot surrounds": 5631,
+    "Fleet": 13759,
+    "Fleet surrounds": 9245,
+    "Hitchin": 14493,
+    "Hitchin surrounds": 14956,
+    "Leighton Buzzard context": 34302,
+    "Linslade": 92,
+    "Flitwick": 8464
+  },
+  "latest_hpi_month": "2026-08",
+  "source_snapshot": "2026-11-11",
+  "hpi_release": "2026-10-21",
+  "source_vintage": "Current linked-data snapshot, with a separately dated HPI release"
+}

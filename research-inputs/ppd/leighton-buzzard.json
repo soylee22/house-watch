@@ -1,0 +1,22 @@
+{
+  "file": "leighton-buzzard.csv",
+  "source": "https://landregistry.data.gov.uk/landregistry/query",
+  "filter": {
+    "town": "LEIGHTON BUZZARD"
+  },
+  "rows": 34394,
+  "expected_count": 34394,
+  "sha256": "a8c62c4c220d52da203e293203ebab6b2400f47f1250752d1d087c05f161ebad",
+  "response_sha256": [
+    "331936df3a847df3db5d971abe857fba1f5614bda65333069cf6d33f2993e882",
+    "c08e422500161f8010350d509b256cd1a249b209b93cdfe65d6fd351e01a3381",
+    "21d7d00397a9b672cbdba27107684c5f073d381c667d07f7ab486e78888ab94b",
+    "13e78032b4c894b1b34035ad3b36b7d7db94194e9ccdcc6c01bc2ecd28817f88",
+    "fef1e90983e85590a05f06bbc9d78c9784db59636fe0b9636eabd1c8132895df",
+    "fcb8418b97dff5dc8dad21fb6770470861d65d27aad4dff0f7b2fb695fdde23f",
+    "8c54e9e67c5c9270fa79cbc4eb15cabf55322fab7a9fe3edf43d49eff5b79c8f"
+  ],
+  "retrieved": "2026-11-11T19:31:10.628330+00:00",
+  "format": "PPD column projection of official current linked-data records",
+  "coverage": "All current returned D/S/T records for this selector, not all nearby postcodes"
+}

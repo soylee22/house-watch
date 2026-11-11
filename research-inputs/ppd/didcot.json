@@ -1,0 +1,20 @@
+{
+  "file": "didcot.csv",
+  "source": "https://landregistry.data.gov.uk/landregistry/query",
+  "filter": {
+    "town": "DIDCOT"
+  },
+  "rows": 24675,
+  "expected_count": 24675,
+  "sha256": "5a116115e9fe23ae4720de190e4588ee0bc4d680802c0b7a8556653756819c6f",
+  "response_sha256": [
+    "c892d64041c0ca1a92a350af5984f57446008d5d1e6b144963efcb29532b4ad4",
+    "a5a908f60631453b300b778db8e1aaef959a0f0d7cdebe53d858a5b069d51a14",
+    "5925d8277fa5f117b0c25975f6b94ae9f74496c35e5be36516bc86b329b16eb7",
+    "ff4cebf2971884ca30771557428e271fd36668aedeb7b03c54f2d7abd561e6ee",
+    "809aef7b288b1b7d1d32bb39373a80f9b9f3b125f8e836b54cb38d194d7d60cb"
+  ],
+  "retrieved": "2026-11-11T19:29:43.124249+00:00",
+  "format": "PPD column projection of official current linked-data records",
+  "coverage": "All current returned D/S/T records for this selector, not all nearby postcodes"
+}

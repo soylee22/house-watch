@@ -1,0 +1,20 @@
+{
+  "file": "fleet.csv",
+  "source": "https://landregistry.data.gov.uk/landregistry/query",
+  "filter": {
+    "town": "FLEET"
+  },
+  "rows": 23004,
+  "expected_count": 23004,
+  "sha256": "5995bb4c77161ec1245bf7735e86c16de2464ca087062eb77ebe895d834f5bb8",
+  "response_sha256": [
+    "d7d9d157b5c5cb4c7242e1eb3f54ab39c568f1ca299eb94f8d5e45f1c00b2597",
+    "9b9d2ddb4c8e5fcdfec7bd28c3071465e1d5d058bc8cbb713df699c8cff2fe22",
+    "4dcc17578c1e307dd11257d89cfdf147cffba2420c7e00c1c226b83afeeae7d7",
+    "2b45d984481487d5fc101a55025d0c91c87aeed9c77dedd011d82ed206b9bf75",
+    "0185dc2b705f001bb40dc99ce317a0c8d045ea06a1b3cf4e4fadbd86b07ca5af"
+  ],
+  "retrieved": "2026-11-11T19:29:59.762213+00:00",
+  "format": "PPD column projection of official current linked-data records",
+  "coverage": "All current returned D/S/T records for this selector, not all nearby postcodes"
+}
