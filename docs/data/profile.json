@@ -1,9 +1,8 @@
 {
   "sales_count": 119986,
-  "model_supported_rows": 117822,
+  "model_supported_rows": 117906,
   "excluded_from_model": {
-    "additional category B": 2080,
-    "no published type/area/month HPI": 84
+    "additional category B": 2080
   },
   "first_date": "1995-01-02",
   "last_date": "2026-09-28",
@@ -18,8 +17,8 @@
     "Leighton Buzzard context": 27087,
     "Flitwick": 8464
   },
-  "latest_hpi_month": "2026-08",
-  "source_snapshot": "2026-11-16",
-  "hpi_release": "2026-10-21",
+  "latest_hpi_month": "2026-09",
+  "source_snapshot": "2026-11-23",
+  "hpi_release": "2026-11-18",
   "source_vintage": "Current linked-data snapshot, with a separately dated HPI release"
 }
